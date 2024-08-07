@@ -10,7 +10,7 @@ class NodeLetter:
         return self.char
 
 class HuffTree:
-    def __init__(self, *, rchild=None, lchild=None):
+    def __init__(self, *, lchild=None, rchild=None):
         self.left: NodeLetter = lchild
         self.right: NodeLetter = rchild
         self.freq: int = int(self.right) + int(self.left)
