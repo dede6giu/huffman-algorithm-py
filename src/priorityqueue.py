@@ -1,7 +1,7 @@
 from typing import Any
 
 class PriorityQueue:
-    def __init__(self, 
+    def __init__(self,
                  *,
                  smaller: bool = True):
         self.queue: list[tuple[Any, int]] = []
