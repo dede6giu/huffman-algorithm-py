@@ -1,7 +1,7 @@
 class NodeLetter:
-    def __init__(self, frequency: int, character: str):
-        self.freq: int = frequency
+    def __init__(self, character: str, frequency: int):
         self.char: str = character
+        self.freq: int = frequency
     
     def __int__(self):
         return self.freq
