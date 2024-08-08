@@ -10,6 +10,9 @@ class PriorityQueue:
     def __str__(self):
         return ' '.join([str(i) for i in self.queue])
 
+    def __len__(self):
+        return len(self.queue)
+
     def is_empty(self):
         return len(self.queue) == 0
 
