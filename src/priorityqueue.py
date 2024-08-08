@@ -32,4 +32,4 @@ class PriorityQueue:
                 return
     
     def dequeue(self):
-        return self.queue.pop(0)
+        return self.queue.pop(0)[0]
