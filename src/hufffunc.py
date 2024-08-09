@@ -101,11 +101,14 @@ def decompress_text(text: str) -> str:
     # Decompresses the provided text (formatted as "{table}{enctext}")
     # Returns a str, the original text
     if not validate_compression(text):
-        raise ValueError("provided text is not a valid compression")
+        raise ValueError("'text' is not a valid compression")
     aux = obtain_denctable_and_text(text)
     dencTable: dict[str, str] = aux[0]
     encText: str = aux[1]
     result: str = ""
+    largestEnc: int = 0
+    for i in dencTable.keys():
+        largestEnc = len(i) if len(i) > largestEnc else largestEnc
     i: int = 0
     sizeEncText: int = len(encText)
     aux = ""
@@ -114,5 +117,7 @@ def decompress_text(text: str) -> str:
         if dencTable.get(aux) != None:
             result += dencTable[aux]
             aux = ""
+        if len(aux) > largestEnc:
+            raise ValueError("'text' is a corrupted compression")
         i += 1
     return result
