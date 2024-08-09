@@ -5,7 +5,7 @@
 
 This program was built on python 3.12.
 
-The program works as expected, transforming text into a "compressed" state. However, due to the nature the files are stored (`.txt` format), they are not actually smaller. The algorythm still works, and does its intended purpose.
+The program works as expected, transforming text into a "compressed" state. However, due to the nature the files are stored (`.txt` format), they are not actually smaller. The algorithm still works, and does its intended purpose.
 
 # How to use
 
