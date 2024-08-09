@@ -33,15 +33,13 @@ def count_unique(text: str) -> dict[str, int]:
             result[text[i]] += 1
     return result
 
-def create_table_string():
-    ...
-
 def compress_text(text: str) -> str:
     charTable: dict[str, int] = count_unique(text)
     tree: HuffTree = create_hufftree(charTable)
+    encTable: dict[str, str] = tree.make_encoding_table()
     resultText: str = ''
 
     for i in range(len(text)):
-        resultText += tree.search_char(text[i])
+        resultText += encTable[text[i]]
     
     return resultText

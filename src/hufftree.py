@@ -39,6 +39,8 @@ class HuffTree:
         self._fixfreq()
 
     def search_char(self, char: str) -> str:
+        # Inneficient. Single character searching only.
+        # For encoding, use make_encoding_table() instead
         queue: list[tuple[NodeLetter | HuffTree, str]] = [(self, '')]
         while len(queue) != 0:
             current = queue.pop(0)
@@ -51,5 +53,20 @@ class HuffTree:
                 queue.append((current[0].left, current[1] + '0'))
             if isinstance(current[0].right, HuffTree):
                 queue.append((current[0].right, current[1] + '1'))
-        else:
-            raise KeyError(f"{char} not in tree")
+        raise KeyError(f"{char} not in tree")
+    
+    def make_encoding_table(self) -> dict[str, str]:
+        queue: list[tuple[NodeLetter | HuffTree, str]] = [(self, '')]
+        result: dict[str, str] = {}
+        while len(queue) != 0:
+            current = queue.pop(0)
+            if isinstance(current[0].left, NodeLetter):
+                result[current[0].left.char] = current[1] + '0'
+            if isinstance(current[0].right, NodeLetter):
+                result[current[0].right.char] = current[1] + '1'
+            
+            if isinstance(current[0].left, HuffTree):
+                queue.append((current[0].left, current[1] + '0'))
+            if isinstance(current[0].right, HuffTree):
+                queue.append((current[0].right, current[1] + '1'))
+        return result
