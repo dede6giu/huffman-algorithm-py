@@ -6,8 +6,13 @@ def compressing_mode():
     print("Please place text to be compressed inside ./files/decompressed.txt")
     input("Press enter when ready... ")
     fileText: str = ""
-    with open("./files/decompressed.txt", "r") as f:
-        fileText = f.read()
+    try:
+        with open("./files/decompressed.txt", "r") as f:
+            fileText = f.read()
+    except Exception as e:
+        print("Some error ocurred while handling the file:")
+        print(e)
+        return
     if fileText == "":
         print("File is empty.")
         input("Press enter to close... ")
@@ -30,8 +35,13 @@ def decompressing_mode():
     print("Please place text to be decompressed inside ./files/compressed.txt")
     input("Press enter when ready... ")
     fileText: str = ""
-    with open("./files/compressed.txt", "r") as f:
-        fileText = f.read()
+    try:
+        with open("./files/compressed.txt", "r") as f:
+            fileText = f.read()
+    except Exception as e:
+        print("Some error ocurred while handling the file:")
+        print(e)
+        return
     if fileText == "":
         print("File is empty.")
         input("Press enter to close... ")
@@ -52,8 +62,8 @@ def decompressing_mode():
 if __name__ == "__main__":
     # Place text to be compressed in ./files/decompressed.txt
     # Place text to be decompressed in ./files/compressed.txt
-    print("Choose action:\n0. Compress text\n1. Decompress text")
     while True:
+        print("Choose action:\n0. Compress text\n1. Decompress text")
         choice: str = input()
         if choice == '0' or choice == '1':
             break
