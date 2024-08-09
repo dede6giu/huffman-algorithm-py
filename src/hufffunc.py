@@ -25,7 +25,7 @@ def create_hufftree(chars: dict[str, int]) -> HuffTree:
 def count_unique(text: str) -> dict[str, int]:
     # Finds all unique characters of a text
     # and automatically counts them
-    result: dict[str, int] = []
+    result: dict[str, int] = {}
     for i in range(len(text)):
         if result.get(text[i]) == None:
             result[text[i]] = 1
@@ -33,10 +33,15 @@ def count_unique(text: str) -> dict[str, int]:
             result[text[i]] += 1
     return result
 
+def create_table_string():
+    ...
+
 def compress_text(text: str) -> str:
-    charTable = count_unique(text)
-    tree = create_hufftree(text)
-    resultText = ''
+    charTable: dict[str, int] = count_unique(text)
+    tree: HuffTree = create_hufftree(charTable)
+    resultText: str = ''
 
     for i in range(len(text)):
-        ...
+        resultText += tree.search_char(text[i])
+    
+    return resultText

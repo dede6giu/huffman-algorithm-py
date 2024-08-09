@@ -51,10 +51,5 @@ class HuffTree:
                 queue.append((current[0].left, current[1] + '0'))
             if isinstance(current[0].right, HuffTree):
                 queue.append((current[0].right, current[1] + '1'))
-
-            if isinstance(current[0].left, HuffTree) or isinstance(current[0].right, HuffTree):
-                continue
-
-            raise ValueError("self is not a valid HuffTree")
         else:
             raise KeyError(f"{char} not in tree")

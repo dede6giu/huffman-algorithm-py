@@ -20,7 +20,7 @@ class PriorityQueue:
         if self.lt:
             for i in range(len(self.queue)):
                 if item[1] < self.queue[i][1]:
-                    self.queue.insert(item, i)
+                    self.queue.insert(i, item)
                     return
             else:
                 self.queue.append(item)
@@ -28,7 +28,7 @@ class PriorityQueue:
         else:
             for i in range(len(self.queue)):
                 if item[1] > self.queue[i][1]:
-                    self.queue.insert(item, i)
+                    self.queue.insert(i, item)
                     return
             else:
                 self.queue.append(item)
