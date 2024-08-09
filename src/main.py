@@ -1,4 +1,65 @@
-import hufftree
+from hufffunc import compress_text
+from hufffunc import decompress_text
+
+def compressing_mode():
+    print("Compressing mode chosen.")
+    print("Please place text to be compressed inside ./files/decompressed.txt")
+    input("Press enter when ready... ")
+    fileText: str = ""
+    with open("./files/decompressed.txt", "r") as f:
+        fileText = f.read()
+    if fileText == "":
+        print("File is empty.")
+        input("Press enter to close... ")
+        return
+    print("Processing...")
+    try:
+        result: str = compress_text(fileText)
+        with open("./files/compressed.txt", "w") as f:
+            f.write(result)
+    except Exception as e:
+        print("Some error ocurred while handling the file:")
+        print(e)
+        return
+    print("Done!")
+    print("File ./files/compressed.txt contains compressed text.")
+    input("Press enter to close... ")
+
+def decompressing_mode():
+    print("Deompressing mode chosen.")
+    print("Please place text to be decompressed inside ./files/compressed.txt")
+    input("Press enter when ready... ")
+    fileText: str = ""
+    with open("./files/compressed.txt", "r") as f:
+        fileText = f.read()
+    if fileText == "":
+        print("File is empty.")
+        input("Press enter to close... ")
+        return
+    print("Processing...")
+    try:
+        result: str = decompress_text(fileText)
+        with open("./files/decompressed.txt", "w") as f:
+            f.write(result)
+    except Exception as e:
+        print("Some error ocurred while handling the file:")
+        print(e)
+        return
+    print("Done!")
+    print("File ./files/decompressed.txt contains decompressed text.")
+    input("Press enter to close... ")
 
 if __name__ == "__main__":
-    pass
+    # Place text to be compressed in ./files/decompressed.txt
+    # Place text to be decompressed in ./files/compressed.txt
+    print("Choose action:\n0. Compress text\n1. Decompress text")
+    while True:
+        choice: str = input()
+        if choice == '0' or choice == '1':
+            break
+        print("Please type a valid option.")
+    
+    if choice == '0':
+        compressing_mode()
+    else:
+        decompressing_mode()
