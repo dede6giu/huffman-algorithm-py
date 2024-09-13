@@ -19,9 +19,7 @@ def compressing_mode():
         return
     print("Processing...")
     try:
-        result: str = compress_text(fileText)
-        with open("./files/compressed.txt", "w") as f:
-            f.write(result)
+        compress_text(fileText)
     except Exception as e:
         print("Some error ocurred while handling the file:")
         print(e)
@@ -34,23 +32,9 @@ def decompressing_mode():
     print("Deompressing mode chosen.")
     print("Please place text to be decompressed inside ./files/compressed.txt")
     input("Press enter when ready... ")
-    fileText: str = ""
-    try:
-        with open("./files/compressed.txt", "r") as f:
-            fileText = f.read()
-    except Exception as e:
-        print("Some error ocurred while handling the file:")
-        print(e)
-        return
-    if fileText == "":
-        print("File is empty.")
-        input("Press enter to close... ")
-        return
     print("Processing...")
     try:
-        result: str = decompress_text(fileText)
-        with open("./files/decompressed.txt", "w") as f:
-            f.write(result)
+        decompress_text()
     except Exception as e:
         print("Some error ocurred while handling the file:")
         print(e)

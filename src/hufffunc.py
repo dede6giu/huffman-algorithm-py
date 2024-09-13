@@ -42,43 +42,67 @@ def enctable_to_str(enctable: dict[str, str]) -> str:
     result += "}"
     return result
 
+def intstrbin_to_decimal(number: str) -> int:
+    result: int = 0
+    cur: int = 1
+    i: int = len(number)-1
+    while i > 0:
+        result += cur * int(number[i])
+        cur *= 2
+        i -= 1
+    return result
+
+def codedstr_to_binarr(coded: str) -> bytearray:
+    result: list[int] = []
+    while len(coded) >= 8:
+        aux = coded[:8]
+        coded = coded[8:]
+        result.append(intstrbin_to_decimal(aux))
+    else:
+        coded += '0'*(8-len(coded))
+        result.append(intstrbin_to_decimal(aux))
+    result: bytearray = bytearray(result)
+    return result
+
 def compress_text(text: str) -> str:
     # Compresses the provided text
     # Returns a str, formatted as "{table}{enctext}"
     charTable: dict[str, int] = count_unique(text)
     tree: HuffTree = create_hufftree(charTable)
     encTable: dict[str, str] = tree.make_encoding_table()
-    resultText: str = enctable_to_str(encTable)
+    resultTable: str = enctable_to_str(encTable) + '\n'
+    resultText: str = ''
     for i in range(len(text)):
         resultText += encTable[text[i]]
+    resultText: bytearray = codedstr_to_binarr(resultText)
+    resultText: bytes = bytes(resultText)
+    resultTable: bytes = bytes(resultTable, 'utf-8')
+    with open("./files/compressed.bin", "wb") as f:
+        f.write(resultTable)
+        f.write(resultText)
+    
     return resultText
 
 def validate_compression(text: str) -> bool:
     # Checks to validate compression
     if text[0] != "{":
         return False
-    aux = text.find("'}'") # escaping having '}' present in the table
+    aux = text.find("\'}\'") # escaping having '}' present in the table
     if aux == -1:
         tableEnd: int = text.find("}")
     else:
         tableEnd: int = text.find("}", aux+3)
     if tableEnd == -1:
         return False
-    size: int = len(text[tableEnd+1:])
-    cnt0: int = text.count('0', tableEnd+1)
-    cnt1: int = text.count('1', tableEnd+1)
-    if size != cnt0 + cnt1:
-        return False
     return True
 
-def obtain_denctable_and_text(encStr: str) -> tuple[dict[str, str], str]:
+def obtain_denctable(encStr: str) -> dict[str, str]:
     aux = encStr.find("'}'") # escaping having '}' present in the table
     if aux == -1:
         tableEnd: int = encStr.find("}")
     else:
         tableEnd: int = encStr.find("}", aux+3)
     tableStr: str = encStr[:tableEnd]
-    encText: str = encStr[tableEnd+1:]
     sizeTable: int = len(tableStr)
     i: int = 0
     denctable: dict[str, str] = {}
@@ -95,29 +119,23 @@ def obtain_denctable_and_text(encStr: str) -> tuple[dict[str, str], str]:
             denctable[aux2] = aux
             continue
         i += 1
-    return (denctable, encText)
+    return denctable
 
-def decompress_text(text: str) -> str:
-    # Decompresses the provided text (formatted as "{table}{enctext}")
+def decompress_text() -> None:
+    # Decompresses the binary file
     # Returns a str, the original text
+    with open("./files/compressed.bin", "rb") as f:
+        text: bytes = f.read()
     if not validate_compression(text):
         raise ValueError("'text' is not a valid compression")
-    aux = obtain_denctable_and_text(text)
-    dencTable: dict[str, str] = aux[0]
-    encText: str = aux[1]
+    dencTable: dict[str, str] = obtain_denctable(text)
     result: str = ""
     largestEnc: int = 0
     for i in dencTable.keys():
         largestEnc = len(i) if len(i) > largestEnc else largestEnc
-    i: int = 0
-    sizeEncText: int = len(encText)
-    aux = ""
-    while i < sizeEncText:
-        aux += encText[i]
-        if dencTable.get(aux) != None:
-            result += dencTable[aux]
-            aux = ""
-        if len(aux) > largestEnc:
-            raise ValueError("'text' is a corrupted compression")
-        i += 1
+    
+    with open("./files/compressed.bin", "rb") as f:
+        aux: bytes = f.readline()
+        aux = f.read()
+
     return result
